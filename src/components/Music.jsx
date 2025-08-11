@@ -9,8 +9,11 @@ export default function Music({ shouldPlay }) {
     if (shouldPlay && audioRef.current) {
       audioRef.current.volume = 0.8
       audioRef.current.play().catch((err) => {
-        console.log("Autoplay failed:", err)
+        console.warn("Autoplay failed:", err)
       })
+    } else if (!shouldPlay && audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
     }
   }, [shouldPlay])
 
