@@ -11,7 +11,7 @@ export default function SpecialMessage({ onComplete }) {
   const [showCursor, setShowCursor] = useState(true)
   const messageRef = useRef(null)
 
-  const fullMessage = `My Dearest Love,
+  const fullMessage = `My Heaven(roseheart),
 
 From the moment our eyes first met, I knew my life would never be the same. You walked into my world like a beautiful dream, bringing light to places I didn't even know were dark.
 
@@ -22,7 +22,7 @@ I want to spend forever making you smile, forever holding your hand, forever bei
 Will you be mine forever and always?
 
 With all my love,
-Your devoted heart 💕`
+Your Salar 💕`
 
   useEffect(() => {
     if (currentIndex < fullMessage.length) {
