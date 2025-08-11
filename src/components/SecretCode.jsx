@@ -1,17 +1,25 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { motion } from "motion/react"
 import { Lock, Heart, Sparkles } from "lucide-react"
 
 export default function SecretCode({ onUnlock }) {
   const [code, setCode] = useState("")
   const [isWrong, setIsWrong] = useState(false)
-  const secretCode = "143"
+  const audioRef = useRef(null)
+  const secretCode = "143" // ❤️ I Love You
 
   const handleSubmit = (e) => {
     e.preventDefault()
     if (code === secretCode) {
+      // Play music before unlocking
+      if (audioRef.current) {
+        audioRef.current.volume = 0.8
+        audioRef.current.play().catch((err) => {
+          console.warn("Autoplay failed:", err)
+        })
+      }
       onUnlock()
     } else {
       setIsWrong(true)
@@ -28,7 +36,6 @@ export default function SecretCode({ onUnlock }) {
       transition={{ duration: 0.8 }}
       className="min-h-screen flex flex-col items-center justify-center text-white px-6 py-8"
     >
-
       <div className="w-full max-w-md">
         <motion.div
           animate={{
@@ -54,7 +61,6 @@ export default function SecretCode({ onUnlock }) {
               >
                 <Lock className="w-16 h-16 text-pink-400 mx-auto drop-shadow-lg" />
 
-                {/* Subtle sparkles around lock */}
                 {[...Array(4)].map((_, i) => (
                   <motion.div
                     key={i}
@@ -91,7 +97,9 @@ export default function SecretCode({ onUnlock }) {
                 >
                   Enter the code to unlock my heart💕
                 </motion.p>
-                <p className="text-white/50 text-sm"><span className="text-black/80">💡</span>Hint: Three numbers that mean "I Love You"</p>
+                <p className="text-white/50 text-sm">
+                  <span className="text-black/80">💡</span>Hint: Three numbers that mean "I Love You"
+                </p>
               </div>
             </div>
 
@@ -136,6 +144,11 @@ export default function SecretCode({ onUnlock }) {
           </div>
         </motion.div>
       </div>
+
+      {/* Hidden audio element */}
+      <audio ref={audioRef} loop preload="auto">
+        <source src="/audio/bg.mp3" type="audio/mpeg" />
+      </audio>
     </motion.div>
   )
 }
