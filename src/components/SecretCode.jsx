@@ -1,26 +1,18 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState } from "react"
 import { motion } from "motion/react"
 import { Lock, Heart, Sparkles } from "lucide-react"
 
 export default function SecretCode({ onUnlock }) {
   const [code, setCode] = useState("")
   const [isWrong, setIsWrong] = useState(false)
-  const audioRef = useRef(null)
   const secretCode = "143" // ❤️ I Love You
 
   const handleSubmit = (e) => {
     e.preventDefault()
     if (code === secretCode) {
-      // Play music before unlocking
-      if (audioRef.current) {
-        audioRef.current.volume = 0.8
-        audioRef.current.play().catch((err) => {
-          console.warn("Autoplay failed:", err)
-        })
-      }
-      onUnlock()
+      onUnlock() // Let page.jsx handle music playing
     } else {
       setIsWrong(true)
       setTimeout(() => setIsWrong(false), 2500)
@@ -36,6 +28,7 @@ export default function SecretCode({ onUnlock }) {
       transition={{ duration: 0.8 }}
       className="min-h-screen flex flex-col items-center justify-center text-white px-6 py-8"
     >
+      {/* UI stays exactly the same */}
       <div className="w-full max-w-md">
         <motion.div
           animate={{
@@ -45,6 +38,7 @@ export default function SecretCode({ onUnlock }) {
           transition={{ duration: 0.6 }}
           className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl relative overflow-hidden"
         >
+          {/* Lock animation */}
           <div className="relative z-10 text-center space-y-8">
             <div className="space-y-6">
               <motion.div
@@ -60,7 +54,6 @@ export default function SecretCode({ onUnlock }) {
                 className="relative"
               >
                 <Lock className="w-16 h-16 text-pink-400 mx-auto drop-shadow-lg" />
-
                 {[...Array(4)].map((_, i) => (
                   <motion.div
                     key={i}
@@ -144,11 +137,6 @@ export default function SecretCode({ onUnlock }) {
           </div>
         </motion.div>
       </div>
-
-      {/* Hidden audio element */}
-      <audio ref={audioRef} loop preload="auto">
-        <source src="/audio/bg.mp3" type="audio/mpeg" />
-      </audio>
     </motion.div>
   )
 }
